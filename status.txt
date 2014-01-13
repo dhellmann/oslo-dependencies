@@ -185,7 +185,7 @@ moving to oslo.rootwrap as part of https://blueprints.launchpad.net/oslo/+spec/s
 :S: Orphan
 :F: jsonutils.py
 
-:Depends on: gettextutils, importutils, timeouts
+:Depends on: gettextutils, importutils, timeutils
 
 === xmlutils ===
 
