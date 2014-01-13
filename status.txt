@@ -1,0 +1,515 @@
+= Oslo Library Graduation Status =
+
+
+== oslo.config ==
+
+=== cfg ===
+
+:M: Mark McLoughlin <markmc@redhat.com>
+:S: Maintained
+:F: cfgfilter.py
+
+:Depends on: oslo.config
+
+Moved to oslo.config, remove from this list? - dhellmann
+
+keep for filter
+
+=== config ===
+
+:M: Julien Danjou <julien@danjou.info>
+:M: Zhongyue Luo <zhongyue.nah@intel.com>
+:S: Maintained
+:F: config/
+
+:Depends on: oslo.config
+
+This is far from being optimal, but it's the best we can do. There's a lot of problem with some stuff like dynamically registered option, but I'm not sure we can really do anything about it.
+
+We will be talking about this issue at the summit
+http://summit.openstack.org/cfp/details/258
+http://summit.openstack.org/cfp/details/125
+
+
+== oslo.concurrency ==
+
+=== local ===
+
+:M:
+:S: Orphan
+:F: local.py
+
+:Depends on: (none)
+
+=== lockutils ===
+
+:M: Michael Still <mikal@stillhq.com>
+:S: Maintained
+:F: lockutils.py
+
+:Depends on: oslo.config
+
+This seems pretty stable now. I see no reason it couldn't be released as a library.
+
+=== processutils ===
+
+:M: Michael Still <mikal@stillhq.com>
+:S: Maintained
+:F: processutils.py
+
+:Depends on: gettextutils, log
+
+change status from maintained?
+
+needs some code cleanup (greenthreads and random sleeps)
+
+will eventually become oslo.processutils?
+
+=== threadgroup ===
+
+:M:
+:S: Orphan
+:F: threadgroup.py
+
+:Depends on: log, loopingcall
+
+
+== oslo.db ==
+
+=== db ===
+
+:M: Boris Pavlovic <boris@pavlovic.me>
+:M: Roman Podolyaka <rpodolyaka@mirantis.com>
+:M: Victor Sergeyev <vsergeyev@mirantis.com>
+:S: Maintained
+:F: db/
+
+:Depends on: importutils, timeutils, gettextutils, log, py3kcompat, test
+
+On the API side we've been pretty stable so far.
+
+The big code changes worth mentioning are:
+    - using of [database] group for DB options instead of [DEFAULT] (must be handled gracefully by oslo.config deprecated_name|group options)
+    - new convention for naming of unique constraints (it's needed for providing developers with informative exceptions on integrity errors)
+    - support of slave engines (the ability to distribute SELECT queries among slave DBs -- this only extends the existing API a bit)
+    - moving of useful sqlalchemy and migrations utils developed in Nova to common code
+
+It would be nice to complete these tasks before making common db code a separate library, but they aren't blockers in any way:
+    https://blueprints.launchpad.net/oslo/+spec/tests-given-db-backend
+    https://bugs.launchpad.net/oslo/+bug/1224898
+    https://blueprints.launchpad.net/nova/+spec/db-reconnect
+
+openstack.common.db  should become a separate library - oslo.db
+We did a PoC a few months ago - (https://review.openstack.org/#/c/42159/) Ironic test suite passed when oslo.db was installed as a separate library (https://github.com/malor/oslo.db)
+
+The challenge with making oslo.db a separate library is that common modules we use (e.g. lockutils) might possibly conflict with the ones in
+OpenStack projects due to defining the same oslo.config options, but having different definitions for those (e.g. oslo.config raised an exception,
+because lockutils version in Ironic had a config option, that didn't provide a help string, but the newer version of lockutils, we used in oslo.db, did)
+
+Move lockutils out of incubation first? - dhellmann
+
+db api must be cleaned up to remove the eventlet dependency before graduating
+
+needs to be synced with nova's version
+
+
+== oslo.log ==
+
+=== log ===
+
+:M:
+:S: Orphan
+:F: log.py
+
+:Depends on: oslo.config, gettextutils, importutils, jsonutils, local
+
+flaper87: Agreed!
+
+
+== oslo.messaging ==
+
+=== notifier ===
+
+:M: Julien Danjou <julien@danjou.info>
+:S: Maintained
+:F: notifier/
+:F: middleware/notifier.py
+
+:Depends on: context, gettextutils, importutils, jsonutils, log, timeutils, rpc
+
+Will be in oslo.messaging and removed from incubator in icehouse (markmc)
+http://docs.openstack.org/developer/oslo.messaging/notifier.html
+
+=== rpc ===
+
+:M: Mark McLoughlin <markmc@redhat.com>
+:M: Russell Bryant <rbryant@redhat.com>
+:S: Maintained
+:F: rpc/
+
+:Depends on: gettextutils, excutils, importutils, jsonutils, local, log, network_utils, rpc, service, sslutils, versionutils
+
+Will be moving projects from this to oslo.messaging in Icehouse so that this can be removed (markmc)
+
+=== zmq ===
+
+:M: Eric Windisch <eric@cloudscaling.com>
+:S: Maintained
+:F: rpc/impl_zmq.py
+:F: rpc/matchmaker*.py
+:F: rpc/zmq_receiver.py
+
+Moving to oslo.messaging (markmc)
+
+
+== oslo.rootwrap ==
+
+=== rootwrap ===
+
+:M: Thierry Carrez <thierry@openstack.org>
+:S: Maintained
+:F: rootwrap/
+
+Move to separate bin/lib was blocked on the question of supporting running python snippets as root (in addition to shelling out) which would break the ability to use plain "sudo" rather than rootwrap. That said with the performance issues of using rootwrap, the ability to run under direct "sudo" is seen as a feature rather than legacy. So we could go and push rootwrap as standalone during Icehouse. I'd like to have a last discussion (at the rootwrap session in HK) on perf issues and alternate solutions -- I don't want a move to standalone rootwrap to make any alternative solution more difficult.
+
+will become oslo.rootwrap (see Thierry's other session notes)
+
+moving to oslo.rootwrap as part of https://blueprints.launchpad.net/oslo/+spec/standalone-rootwrap
+
+
+== oslo.serialization ==
+
+=== jsonutils ===
+
+:M:
+:S: Orphan
+:F: jsonutils.py
+
+:Depends on: gettextutils, importutils, timeouts
+
+=== xmlutils ===
+
+:M:
+:S: Orphan
+:F: xmlutils.py
+
+:Depends on: (none)
+
+This was a security fix. Can we rely on our dependencies having this fix now? - dhellmann
+
+
+== oslo.server ==
+
+=== eventlet_backdoor ===
+
+:M:
+:S: Orphan
+:F: eventlet_backdoor.py
+
+:Depends on: gettextutils, log
+
+should eventually go into the service library (move in the incubator to the service stuff)
+
+=== loopingcall ===
+
+:M:
+:S: Orphan
+:F: loopingcall.py
+
+:Depends on: gettextutils, log, timeutils
+
+=== periodic_task ===
+
+:M: Michael Still <mikal@stillhq.com>
+:S: Maintained
+:F: periodic_task.py
+
+:Depends on: gettextutils, log, timeutils
+
+This one seems stable too.
+
+=== service ===
+
+:M: Michael Still <mikal@stillhq.com>
+:S: Maintained
+:F: service.py
+
+:Depends on: eventlet_backdoor, gettextutils, importutils, log, threadgroup
+
+=== sslutils ===
+
+:M:
+:S: Orphan
+:F: sslutils.py
+
+:Depends on: gettextutils
+
+
+== oslo.test ==
+
+=== fixtures ===
+
+:M: Monty Taylor <mordred@inaugust.com>
+:S: Maintained
+:F: fixture/
+
+:Depends on: lockutils
+
+
+== oslo.text ==
+
+=== gettextutils ===
+
+:M: Mark McLoughlin <markmc@redhat.com>
+:S: Maintained
+:F: gettextutils.py
+
+:Depends on: (none)
+
+I think this is mostly being maintained by the various folks working on delayed-message-translation now (markmc)
+
+Set a goal to have this ready to move out of the incubator during J? - dhellmann
+
+=== strutils ===
+
+:M: Flavio Percoco <flavio@redhat.com>
+:S: Maintained
+:F: strutils.py
+
+:Depends on: gettextutils
+
+I think strutils is stable enough, however, I'd like to:
+    1) Find a common place for this and other modules. I don't think it is worth having oslo.strutils. We once talk about having oslo.text and group strutils and other modules there.
+    2) Make sure it's PY3K support. Even though python 3 support is not an OS requirement, this module should be fairly simple to port and we could have a voting PY3K gate for it. 
+
+It may make sense to keep the encoding/decoding functions.
+to_slug() is used in the clients, maybe that can move to the new client section of the incubator?
+I would like to replace the units parsing code with another library if we can find one suitable. Pint does not have python 2.6 support, but would work other than that. - dhellmann
+
+
+== oslo.utils ==
+
+=== compat ===
+
+:M: Chuck Short <chuck.short@canonical.com>
+:S: Maintained
+:F: py3kcompat
+
+:Depends on: (none)
+
+
+=== excutils ===
+
+M:
+S: Orphan
+F: excutils.py
+
+:Depends on: gettextutils
+
+Other than its use of our gettextutils, this could be pulled out into a separate library without needing the oslo name. - dhellmann
+
+can we use the stdlib? should we remove the translations? (2 messages)
+
+look for similar code elsewhere
+
+contribute to stdlib?
+
+# How do we handle translations for the log messages if this goes into its own lib?
+
+=== fileutils ===
+
+:M: Zhongyue Luo <zhongyue.nah@intel.com>
+:S: Maintained
+:F: fileutils.py
+
+:Depends on: excutils, gettextutils, log
+
+There are still changes being made to function signatures to meet the needs of mocking when writing test scripts. Needs a cycle or two.
+
+=== funcutils ===
+
+:M: Joshua Harlow <harlowja@yahoo-inc.com>
+:S: Maintained
+:F: funcutils.py
+
+:Depends on: (none)
+
+
+=== importutils ===
+
+:M:
+:S: Orphan
+:F: importutils.py
+
+:Depends on: (none)
+
+Deprecate the functions replaced by stevedore & pkg_resources? the try_import() function looks trivial, do we need it? - dhellmann
+
+
+=== network_utils ===
+
+:M:
+:S: Orphan
+:F: network_utils.py
+
+:Depends on: py3kcompat
+
+I'm trying to put these things in stdlib see http://bugs.python.org/issue18191 -- jd
+
+won't graduate
+
+=== timeutils ===
+
+:M: Zhongyue Luo <zhongyue.nah@intel.com>
+:S: Maintained
+:F: timeutils.py
+
+:Depends on: (none)
+
+The problem with timeutils is that code for testing coexist. For example, IMO set_time_override should be removed and use mock or fixture to replace its functionality.
+
+Do most of the functions here only apply for testing? The parsing and formatting functions may be useful, to ensure consistent timestamp formats.
+
+=== uuidutils ===
+
+:M: Zhongyue Luo <zhongyue.nah@intel.com>
+:S: Maintained
+:F: uuidutils.py
+
+:Depends on: (none)
+
+This module is stable.
+
+Generating the UUID string seems trivial enough to not need a function. 
+There is some work going into WSME to validate UUID strings at the API layer. Is the validation code used anywhere else? - dhellmann
+
+nova uses this all over the place to check if a string is a uuid; can we move that function into nova and deprecate/delete this module?
+
+neutron also uses the same function
+
+
+== Undecided ==
+
+=== apiclient ===
+
+:M: Alessio Ababilov <aababilov@griddynamics.com>
+:S: Maintained
+:F: apiclient/
+
+=== audit ===
+
+:M: Gordon Chung <chungg@ca.ibm.com>
+:S: Maintained
+:F: middleware/audit.py
+
+this middleware is relatively lightweight as it utilises notifier middleware to handle most of the actions... outside of that it uses only pycadf library to append audit info.
+currently making improvements to pycadf library... we have plans to extend its functionality but the overall model is relatively stable. (ref: https://launchpad.net/pycadf)
+
+=== authutils ===
+
+:M:
+:S: Orphan
+:F: authutils.py
+
+I found no users of this module outside of its tests under openstack/*
+It was apparently brought in from keystone by russelb - dhellmann
+
+fixes a vulnerability using constant time string comparison
+
+Added by https://review.openstack.org/6221
+
+See https://bugs.launchpad.net/keystone/+bug/942644
+
+Was strcmp_const_time() in Nova when Nova had its own auth code
+removed by https://review.openstack.org/9579
+
+Swift uses it too (https://review.openstack.org/4643) but swift hates Oslo, so ....
+  swift/common/utils.py:1866:def streq_const_time(s1, s2)
+
+Conclusion: only keystone needs this, so we can remove it from oslo-incubator
+
+=== cliutils ===
+
+:M:
+:S: Orphan
+:F: cliutils.py
+
+These functions should move into the python-openstackclient project, if they are still needed. - dhellmann
+
+=== context ===
+
+:M:
+:S: Obsolete
+:F: context.py
+:F: middleware/context.py
+
+Deprecate? Delete?
+
+delete, but look at the notifier code and logging -- also reviews in nova that were trying to rebase on top of this?
+
+used in context middleware (markmc says delete) and rpc (obsoleted by oslo.messaging)
+
+=== crypto ===
+
+:M: Simo Sorce <simo@redhat.com>
+:S: Maintained
+:F: crypto/
+
+KDS's REST API is being slightly changed after review by the Keystone developers.
+This will require some minor changes to the SecureMessage internal code used to fetch and tickets from the KDS.
+
+This code will be used in oslo.messaging and keystone (markmc)
+
+Should it eventually live in oslo.crypto or should it be part of a library that the keystone devs maintain? - dhellmann
+
+=== imageutils ===
+
+:M: Zhongyue Luo <zhongyue.nah@intel.com>
+:S: Maintained
+:F: imageutils.py
+
+This module has just been added. Next steps are to add common image manipulation helper functions used in Nova and Cinder.
+
+=== memorycache ===
+
+:M:
+:S: Orphan
+:F: memorycache.py
+
+=== policy ===
+
+:M: Flavio Percoco <flavio@redhat.com>
+:M: Adam Young <ayoung@redhat.com>
+:S: Maintained
+:F: policy.py
+
+ (Agreed on the stability of policy.py)
+
+=== quota ===
+
+:M: Sergey Skripnick <sskripnick@mirantis.com>
+:S: Maintained
+:F: quota.py
+
+ This file is merged from nova and cinder, but not used in any project yet.
+
+=== scheduler ===
+
+:M:
+:S: Orphan
+:F: scheduler/
+
+boris-42: We should get rid of this. There is a way to build scalable one scheduler as a service.
+And solve a lot of current issues.
+
+=== reports ===
+
+:M: Solly Ross <sross@redhat.com>
+:S: Maintained
+:F: report/
+
+Where is this being used? - dhellmann
+
+We are planning to use the pattern and some of the code here for Ceilometer reporting. Most of the existing stuff is pretty specific to the Guru Mediation Report, it looks like.
+Link: https://wiki.openstack.org/wiki/OutreachProgramForWomen/Ideas#Reporting_Framework_for_Ceilometer_based_on_Oslo_Reporting
+- thomasem
