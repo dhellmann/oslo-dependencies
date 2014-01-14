@@ -15,3 +15,6 @@ draw modules
 
 lib_graph.py > libs.dot
 draw libs
+
+lib_graph_verbose.py > libs_verbose.dot
+draw libs_verbose

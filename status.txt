@@ -1,5 +1,49 @@
 = Oslo Library Graduation Status =
 
+== oslo.cache ==
+
+=== memorycache ===
+
+:M:
+:S: Orphan
+:F: memorycache.py
+
+
+== oslo.client ==
+
+=== apiclient ===
+
+:M: Alessio Ababilov <aababilov@griddynamics.com>
+:S: Maintained
+:F: apiclient/
+
+
+== oslo.concurrency ==
+
+=== lockutils ===
+
+:M: Michael Still <mikal@stillhq.com>
+:S: Maintained
+:F: lockutils.py
+
+:Depends on: oslo.config
+
+This seems pretty stable now. I see no reason it couldn't be released as a library.
+
+=== processutils ===
+
+:M: Michael Still <mikal@stillhq.com>
+:S: Maintained
+:F: processutils.py
+
+:Depends on: gettextutils, log
+
+change status from maintained?
+
+needs some code cleanup (greenthreads and random sleeps)
+
+will eventually become oslo.processutils?
+
 
 == oslo.config ==
 
@@ -31,32 +75,20 @@ http://summit.openstack.org/cfp/details/258
 http://summit.openstack.org/cfp/details/125
 
 
-== oslo.concurrency ==
+== oslo.crypto ==
 
-=== lockutils ===
+=== crypto ===
 
-:M: Michael Still <mikal@stillhq.com>
+:M: Simo Sorce <simo@redhat.com>
 :S: Maintained
-:F: lockutils.py
+:F: crypto/
 
-:Depends on: oslo.config
+KDS's REST API is being slightly changed after review by the Keystone developers.
+This will require some minor changes to the SecureMessage internal code used to fetch and tickets from the KDS.
 
-This seems pretty stable now. I see no reason it couldn't be released as a library.
+This code will be used in oslo.messaging and keystone (markmc)
 
-=== processutils ===
-
-:M: Michael Still <mikal@stillhq.com>
-:S: Maintained
-:F: processutils.py
-
-:Depends on: gettextutils, log
-
-change status from maintained?
-
-needs some code cleanup (greenthreads and random sleeps)
-
-will eventually become oslo.processutils?
-
+Should it eventually live in oslo.crypto or should it be part of a library that the keystone devs maintain? - dhellmann
 
 
 == oslo.db ==
@@ -96,6 +128,78 @@ Move lockutils out of incubation first? - dhellmann
 db api must be cleaned up to remove the eventlet dependency before graduating
 
 needs to be synced with nova's version
+
+
+== oslo.image ==
+
+=== imageutils ===
+
+:M: Zhongyue Luo <zhongyue.nah@intel.com>
+:S: Maintained
+:F: imageutils.py
+
+This module has just been added. Next steps are to add common image manipulation helper functions used in Nova and Cinder.
+
+
+== oslo.io ==
+
+=== fileutils ===
+
+:M: Zhongyue Luo <zhongyue.nah@intel.com>
+:S: Maintained
+:F: fileutils.py
+
+:Depends on: excutils, gettextutils, log
+
+There are still changes being made to function signatures to meet the needs of mocking when writing test scripts. Needs a cycle or two.
+
+
+== oslo.language ==
+
+=== importutils ===
+
+:M:
+:S: Orphan
+:F: importutils.py
+
+:Depends on: (none)
+
+Deprecate the functions replaced by stevedore & pkg_resources? the try_import() function looks trivial, do we need it? - dhellmann
+
+=== py3kcompat ===
+
+:M: Chuck Short <chuck.short@canonical.com>
+:S: Maintained
+:F: py3kcompat
+
+:Depends on: (none)
+
+=== excutils ===
+
+M:
+S: Orphan
+F: excutils.py
+
+:Depends on: gettextutils
+
+Other than its use of our gettextutils, this could be pulled out into a separate library without needing the oslo name. - dhellmann
+
+can we use the stdlib? should we remove the translations? (2 messages)
+
+look for similar code elsewhere
+
+contribute to stdlib?
+
+# How do we handle translations for the log messages if this goes into its own lib?
+
+=== funcutils ===
+
+:M: Joshua Harlow <harlowja@yahoo-inc.com>
+:S: Maintained
+:F: funcutils.py
+
+:Depends on: (none)
+
 
 == oslo.local ==
 
@@ -165,6 +269,55 @@ Will be moving projects from this to oslo.messaging in Icehouse so that this can
 :F: rpc/zmq_receiver.py
 
 Moving to oslo.messaging (markmc)
+
+
+== oslo.middleware ==
+
+=== audit ===
+
+:M: Gordon Chung <chungg@ca.ibm.com>
+:S: Maintained
+:F: middleware/audit.py
+
+this middleware is relatively lightweight as it utilises notifier middleware to handle most of the actions... outside of that it uses only pycadf library to append audit info.
+currently making improvements to pycadf library... we have plans to extend its functionality but the overall model is relatively stable. (ref: https://launchpad.net/pycadf)
+
+
+== oslo.policy ==
+
+=== policy ===
+
+:M: Flavio Percoco <flavio@redhat.com>
+:M: Adam Young <ayoung@redhat.com>
+:S: Maintained
+:F: policy.py
+
+ (Agreed on the stability of policy.py)
+
+
+== oslo.quota ==
+
+=== quota ===
+
+:M: Sergey Skripnick <sskripnick@mirantis.com>
+:S: Maintained
+:F: quota.py
+
+ This file is merged from nova and cinder, but not used in any project yet.
+
+== oslo.reports ==
+
+=== reports ===
+
+:M: Solly Ross <sross@redhat.com>
+:S: Maintained
+:F: report/
+
+Where is this being used? - dhellmann
+
+We are planning to use the pattern and some of the code here for Ceilometer reporting. Most of the existing stuff is pretty specific to the Guru Mediation Report, it looks like.
+Link: https://wiki.openstack.org/wiki/OutreachProgramForWomen/Ideas#Reporting_Framework_for_Ceilometer_based_on_Oslo_Reporting
+- thomasem
 
 
 == oslo.rootwrap ==
@@ -308,53 +461,7 @@ to_slug() is used in the clients, maybe that can move to the new client section 
 I would like to replace the units parsing code with another library if we can find one suitable. Pint does not have python 2.6 support, but would work other than that. - dhellmann
 
 
-== oslo.language ==
 
-=== py3kcompat ===
-
-:M: Chuck Short <chuck.short@canonical.com>
-:S: Maintained
-:F: py3kcompat
-
-:Depends on: (none)
-
-=== excutils ===
-
-M:
-S: Orphan
-F: excutils.py
-
-:Depends on: gettextutils
-
-Other than its use of our gettextutils, this could be pulled out into a separate library without needing the oslo name. - dhellmann
-
-can we use the stdlib? should we remove the translations? (2 messages)
-
-look for similar code elsewhere
-
-contribute to stdlib?
-
-# How do we handle translations for the log messages if this goes into its own lib?
-
-=== funcutils ===
-
-:M: Joshua Harlow <harlowja@yahoo-inc.com>
-:S: Maintained
-:F: funcutils.py
-
-:Depends on: (none)
-
-== oslo.io ==
-
-=== fileutils ===
-
-:M: Zhongyue Luo <zhongyue.nah@intel.com>
-:S: Maintained
-:F: fileutils.py
-
-:Depends on: excutils, gettextutils, log
-
-There are still changes being made to function signatures to meet the needs of mocking when writing test scripts. Needs a cycle or two.
 
 == oslo.utils ==
 
@@ -406,36 +513,12 @@ neutron also uses the same function
 :F: versionutils.py
 
 
-== oslo.importutils ===
-
-=== importutils ===
-
-:M:
-:S: Orphan
-:F: importutils.py
-
-:Depends on: (none)
-
-Deprecate the functions replaced by stevedore & pkg_resources? the try_import() function looks trivial, do we need it? - dhellmann
 
 
 
-== Undecided ==
 
-=== apiclient ===
 
-:M: Alessio Ababilov <aababilov@griddynamics.com>
-:S: Maintained
-:F: apiclient/
-
-=== audit ===
-
-:M: Gordon Chung <chungg@ca.ibm.com>
-:S: Maintained
-:F: middleware/audit.py
-
-this middleware is relatively lightweight as it utilises notifier middleware to handle most of the actions... outside of that it uses only pycadf library to append audit info.
-currently making improvements to pycadf library... we have plans to extend its functionality but the overall model is relatively stable. (ref: https://launchpad.net/pycadf)
+== To Be Deleted ==
 
 === authutils ===
 
@@ -481,50 +564,6 @@ delete, but look at the notifier code and logging -- also reviews in nova that w
 
 used in context middleware (markmc says delete) and rpc (obsoleted by oslo.messaging)
 
-=== crypto ===
-
-:M: Simo Sorce <simo@redhat.com>
-:S: Maintained
-:F: crypto/
-
-KDS's REST API is being slightly changed after review by the Keystone developers.
-This will require some minor changes to the SecureMessage internal code used to fetch and tickets from the KDS.
-
-This code will be used in oslo.messaging and keystone (markmc)
-
-Should it eventually live in oslo.crypto or should it be part of a library that the keystone devs maintain? - dhellmann
-
-=== imageutils ===
-
-:M: Zhongyue Luo <zhongyue.nah@intel.com>
-:S: Maintained
-:F: imageutils.py
-
-This module has just been added. Next steps are to add common image manipulation helper functions used in Nova and Cinder.
-
-=== memorycache ===
-
-:M:
-:S: Orphan
-:F: memorycache.py
-
-=== policy ===
-
-:M: Flavio Percoco <flavio@redhat.com>
-:M: Adam Young <ayoung@redhat.com>
-:S: Maintained
-:F: policy.py
-
- (Agreed on the stability of policy.py)
-
-=== quota ===
-
-:M: Sergey Skripnick <sskripnick@mirantis.com>
-:S: Maintained
-:F: quota.py
-
- This file is merged from nova and cinder, but not used in any project yet.
-
 === scheduler ===
 
 :M:
@@ -533,15 +572,3 @@ This module has just been added. Next steps are to add common image manipulation
 
 boris-42: We should get rid of this. There is a way to build scalable one scheduler as a service.
 And solve a lot of current issues.
-
-=== reports ===
-
-:M: Solly Ross <sross@redhat.com>
-:S: Maintained
-:F: report/
-
-Where is this being used? - dhellmann
-
-We are planning to use the pattern and some of the code here for Ceilometer reporting. Most of the existing stuff is pretty specific to the Guru Mediation Report, it looks like.
-Link: https://wiki.openstack.org/wiki/OutreachProgramForWomen/Ideas#Reporting_Framework_for_Ceilometer_based_on_Oslo_Reporting
-- thomasem
