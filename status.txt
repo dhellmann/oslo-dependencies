@@ -115,9 +115,15 @@ needs to be synced with nova's version
 :S: Orphan
 :F: log.py
 
-:Depends on: oslo.config, gettextutils, importutils, jsonutils, local, log_handler
+:Depends on: oslo.config, gettextutils, importutils, jsonutils, local
 
 flaper87: Agreed!
+
+ACTION: Change handling of publish_errors configuration option so the
+log_handler module isn't imported with importutils, since that module
+is moving to oslo.messaging and we do not want a circular dependency.
+
+== oslo.messaging ==
 
 === log_handler ===
 
@@ -126,8 +132,6 @@ flaper87: Agreed!
 :F: log.py
 
 :Depends on: oslo.config, notifier
-
-== oslo.messaging ==
 
 === notifier ===
 
@@ -304,7 +308,7 @@ to_slug() is used in the clients, maybe that can move to the new client section 
 I would like to replace the units parsing code with another library if we can find one suitable. Pint does not have python 2.6 support, but would work other than that. - dhellmann
 
 
-== oslo.utils ==
+== oslo.language ==
 
 === py3kcompat ===
 
@@ -313,7 +317,6 @@ I would like to replace the units parsing code with another library if we can fi
 :F: py3kcompat
 
 :Depends on: (none)
-
 
 === excutils ===
 
@@ -333,6 +336,16 @@ contribute to stdlib?
 
 # How do we handle translations for the log messages if this goes into its own lib?
 
+=== funcutils ===
+
+:M: Joshua Harlow <harlowja@yahoo-inc.com>
+:S: Maintained
+:F: funcutils.py
+
+:Depends on: (none)
+
+== oslo.io ==
+
 === fileutils ===
 
 :M: Zhongyue Luo <zhongyue.nah@intel.com>
@@ -343,15 +356,7 @@ contribute to stdlib?
 
 There are still changes being made to function signatures to meet the needs of mocking when writing test scripts. Needs a cycle or two.
 
-=== funcutils ===
-
-:M: Joshua Harlow <harlowja@yahoo-inc.com>
-:S: Maintained
-:F: funcutils.py
-
-:Depends on: (none)
-
-
+== oslo.utils ==
 
 === network_utils ===
 
@@ -363,7 +368,7 @@ There are still changes being made to function signatures to meet the needs of m
 
 I'm trying to put these things in stdlib see http://bugs.python.org/issue18191 -- jd
 
-won't graduate
+won't graduate?
 
 === timeutils ===
 
