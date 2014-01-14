@@ -1,5 +1,6 @@
 = Oslo Library Graduation Status =
 
+
 == oslo.cache ==
 
 === memorycache ===
@@ -47,7 +48,7 @@ will eventually become oslo.processutils?
 
 == oslo.config ==
 
-=== cfg ===
+=== cfgfilter ===
 
 :M: Mark McLoughlin <markmc@redhat.com>
 :S: Maintained
@@ -279,9 +280,18 @@ Moving to oslo.messaging (markmc)
 :S: Maintained
 :F: middleware/audit.py
 
+:Depends on: (none)
+
 this middleware is relatively lightweight as it utilises notifier middleware to handle most of the actions... outside of that it uses only pycadf library to append audit info.
 currently making improvements to pycadf library... we have plans to extend its functionality but the overall model is relatively stable. (ref: https://launchpad.net/pycadf)
 
+=== middleware ===
+
+:M:
+:S: Orphan
+:F: middleware/
+
+:Depends on: gettextutils, log, context, notifier
 
 == oslo.policy ==
 
@@ -413,7 +423,7 @@ This one seems stable too.
 
 == oslo.test ==
 
-=== fixtures ===
+=== fixture ===
 
 :M: Monty Taylor <mordred@inaugust.com>
 :S: Maintained
@@ -461,6 +471,15 @@ to_slug() is used in the clients, maybe that can move to the new client section 
 I would like to replace the units parsing code with another library if we can find one suitable. Pint does not have python 2.6 support, but would work other than that. - dhellmann
 
 
+== oslo.units ==
+
+=== units ===
+
+:M:
+:S: Orphan
+:F: units.py
+
+:Depends on: (none)
 
 
 == oslo.utils ==
