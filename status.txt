@@ -33,14 +33,6 @@ http://summit.openstack.org/cfp/details/125
 
 == oslo.concurrency ==
 
-=== local ===
-
-:M:
-:S: Orphan
-:F: local.py
-
-:Depends on: (none)
-
 === lockutils ===
 
 :M: Michael Still <mikal@stillhq.com>
@@ -65,13 +57,6 @@ needs some code cleanup (greenthreads and random sleeps)
 
 will eventually become oslo.processutils?
 
-=== threadgroup ===
-
-:M:
-:S: Orphan
-:F: threadgroup.py
-
-:Depends on: log, loopingcall
 
 
 == oslo.db ==
@@ -112,6 +97,15 @@ db api must be cleaned up to remove the eventlet dependency before graduating
 
 needs to be synced with nova's version
 
+== oslo.local ==
+
+=== local ===
+
+:M:
+:S: Orphan
+:F: local.py
+
+:Depends on: (none)
 
 == oslo.log ==
 
@@ -121,10 +115,17 @@ needs to be synced with nova's version
 :S: Orphan
 :F: log.py
 
-:Depends on: oslo.config, gettextutils, importutils, jsonutils, local
+:Depends on: oslo.config, gettextutils, importutils, jsonutils, local, log_handler
 
 flaper87: Agreed!
 
+=== log_handler ===
+
+:M:
+:S: Orphan
+:F: log.py
+
+:Depends on: oslo.config, notifier
 
 == oslo.messaging ==
 
@@ -244,6 +245,14 @@ This one seems stable too.
 
 :Depends on: gettextutils
 
+=== threadgroup ===
+
+:M:
+:S: Orphan
+:F: threadgroup.py
+
+:Depends on: log, loopingcall
+
 
 == oslo.test ==
 
@@ -297,7 +306,7 @@ I would like to replace the units parsing code with another library if we can fi
 
 == oslo.utils ==
 
-=== compat ===
+=== py3kcompat ===
 
 :M: Chuck Short <chuck.short@canonical.com>
 :S: Maintained
@@ -343,16 +352,6 @@ There are still changes being made to function signatures to meet the needs of m
 :Depends on: (none)
 
 
-=== importutils ===
-
-:M:
-:S: Orphan
-:F: importutils.py
-
-:Depends on: (none)
-
-Deprecate the functions replaced by stevedore & pkg_resources? the try_import() function looks trivial, do we need it? - dhellmann
-
 
 === network_utils ===
 
@@ -394,6 +393,26 @@ There is some work going into WSME to validate UUID strings at the API layer. Is
 nova uses this all over the place to check if a string is a uuid; can we move that function into nova and deprecate/delete this module?
 
 neutron also uses the same function
+
+=== versionutils ===
+
+:M:
+:S: Orphan
+:F: versionutils.py
+
+
+== oslo.importutils ===
+
+=== importutils ===
+
+:M:
+:S: Orphan
+:F: importutils.py
+
+:Depends on: (none)
+
+Deprecate the functions replaced by stevedore & pkg_resources? the try_import() function looks trivial, do we need it? - dhellmann
+
 
 
 == Undecided ==

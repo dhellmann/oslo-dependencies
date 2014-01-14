@@ -5,6 +5,12 @@ import collections
 import itertools
 import fileinput
 
+NOT_LIB = set([
+    'Undecided',
+    #'oslo.server',
+    #'oslo.utils',
+    #'oslo.concurrency',
+])
 
 def get_deps_by_module(infile):
     library_name = None
@@ -14,13 +20,13 @@ def get_deps_by_module(infile):
         if line.startswith('== '):
             # New lib
             library_name = line.strip().strip('=').strip()
-            if library_name != 'Undecided':
+            if library_name not in NOT_LIB:
                 libraries[library_name] = []
             module_name = None
         elif line.startswith('=== '):
             # New module
             module_name = line.strip().strip('=').strip()
-            if library_name == 'Undecided':
+            if library_name in NOT_LIB:
                 libraries[module_name] = []
             else:
                 libraries[library_name].append(module_name)
@@ -58,7 +64,7 @@ def print_graph(libraries, dependencies):
 
     # Draw the libraries with their contents as ovals
     for name, modules in sorted(libraries.items()):
-        generate_node(name, shape='square')
+        generate_node(name)
         # for mod in modules:
         #     generate_node(mod)
         #     print '%s -> %s' % (_node_names[mod], _node_names[name])
