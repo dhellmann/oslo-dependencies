@@ -65,9 +65,6 @@ def print_graph(libraries, dependencies):
     # Draw the libraries with their contents as ovals
     for name, modules in sorted(libraries.items()):
         generate_node(name)
-        # for mod in modules:
-        #     generate_node(mod)
-        #     print '%s -> %s' % (_node_names[mod], _node_names[name])
 
     # Represent the module dependencies as library dependencies
     # with the module name as the edge label
@@ -88,11 +85,6 @@ def print_graph(libraries, dependencies):
                 print edge
                 edges.add(edge)
     print
-
-    # Generate the edges
-    # for mod, deps in sorted(dependencies.items()):
-    #     for d in deps:
-    #         print '  %s -> %s;' % (_node_names[mod], _node_names[d])
 
     print '}'
 
