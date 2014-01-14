@@ -62,29 +62,26 @@ def print_graph(libraries, dependencies):
 
     print 'digraph oslo {'
 
-    # Draw the libraries with their contents as ovals
-    for name, modules in sorted(libraries.items()):
-        generate_node(name)
-
     # Represent the module dependencies as library dependencies
     # with the module name as the edge label
     edges = set()
     for mod, deps in sorted(dependencies.items()):
         src_lib_name = mods_to_lib.get(mod, mod)
-        generate_node(src_lib_name)
+        #generate_node(src_lib_name)
         src_lib = _node_names[src_lib_name]
         for d in deps:
             dest_lib_name = mods_to_lib.get(d, d)
             if dest_lib_name == src_lib_name:
                 continue
-            generate_node(dest_lib_name)
+            #generate_node(dest_lib_name)
             dest_lib = _node_names[dest_lib_name]
-            #print '%s -> %s [ label = "%s" ];' % (src_lib, dest_lib, d)
+            #edge = '%s -> %s [ label = "%s" ];' % (src_lib, dest_lib, d)
             edge = '%s -> %s;' % (src_lib, dest_lib)
             if edge not in edges:
+                generate_node(src_lib_name)
+                generate_node(dest_lib_name)
                 print edge
                 edges.add(edge)
-    print
 
     print '}'
 
