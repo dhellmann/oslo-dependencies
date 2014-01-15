@@ -31,6 +31,10 @@
 
 This seems pretty stable now. I see no reason it couldn't be released as a library.
 
+Comments from bnemec via ML:
+
+  It would be nice to get lockutils graduated to solve some of the issues mentioned in the oslo.db section, but I believe we do have an outstanding question regarding its behavior without lock_path being set.  I think Clint was on board with Sean's proposed solution after quite a bit of discussion (http://lists.openstack.org/pipermail/openstack-dev/2013-December/021620.html), so it's possible we could just restore that patch and call it done, but it should probably be addressed somehow before graduation.
+
 === processutils ===
 
 :M: Michael Still <mikal@stillhq.com>
@@ -91,6 +95,8 @@ This code will be used in oslo.messaging and keystone (markmc)
 
 Should it eventually live in oslo.crypto or should it be part of a library that the keystone devs maintain? - dhellmann
 
+It is mostly used in KDS to encrypt keys before storage and in this capacity it should be reusable for swift/cinder or projects looking to do encrypted storage. 
+It's fairly low level at the moment but a simpler interface to this can be added when there is reuse of the module. --jamielennox
 
 == oslo.db ==
 
@@ -302,8 +308,10 @@ currently making improvements to pycadf library... we have plans to extend its f
 :S: Maintained
 :F: policy.py
 
- (Agreed on the stability of policy.py)
+Depends on: fileutils, gettextutils, jsonutils, oslo.log,  oslo.config
 
+We could get rid of the oslo.config dependency.
+ (Agreed on the stability of policy.py)
 
 == oslo.quota ==
 
@@ -323,12 +331,13 @@ currently making improvements to pycadf library... we have plans to extend its f
 :S: Maintained
 :F: report/
 
+:Depends on: jsonutils
+
 Where is this being used? - dhellmann
 
 We are planning to use the pattern and some of the code here for Ceilometer reporting. Most of the existing stuff is pretty specific to the Guru Mediation Report, it looks like.
 Link: https://wiki.openstack.org/wiki/OutreachProgramForWomen/Ideas#Reporting_Framework_for_Ceilometer_based_on_Oslo_Reporting
 - thomasem
-
 
 == oslo.rootwrap ==
 
