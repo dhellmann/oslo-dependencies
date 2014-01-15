@@ -3,14 +3,17 @@
 
 == oslo.cache ==
 
+bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-cache
+
 === memorycache ===
 
 :M:
 :S: Orphan
 :F: memorycache.py
 
-
 == oslo.client ==
+
+bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-client
 
 === apiclient ===
 
@@ -18,8 +21,9 @@
 :S: Maintained
 :F: apiclient/
 
-
 == oslo.concurrency ==
+
+bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-concurrency
 
 === lockutils ===
 
@@ -47,9 +51,6 @@ change status from maintained?
 
 needs some code cleanup (greenthreads and random sleeps)
 
-will eventually become oslo.processutils?
-
-
 == oslo.config ==
 
 === cfgfilter ===
@@ -59,6 +60,8 @@ will eventually become oslo.processutils?
 :F: cfgfilter.py
 
 :Depends on: oslo.config
+
+bp: https://blueprints.launchpad.net/oslo/+spec/graduate-cfgfilter
 
 Moved to oslo.config, remove from this list? - dhellmann
 
@@ -73,12 +76,14 @@ keep for filter
 
 :Depends on: oslo.config
 
+bp: https://blueprints.launchpad.net/oslo/+spec/graduate-config-generator
+
 This is far from being optimal, but it's the best we can do. There's a lot of problem with some stuff like dynamically registered option, but I'm not sure we can really do anything about it.
 
 We will be talking about this issue at the summit
-http://summit.openstack.org/cfp/details/258
-http://summit.openstack.org/cfp/details/125
 
+# http://summit.openstack.org/cfp/details/258
+# http://summit.openstack.org/cfp/details/125
 
 == oslo.crypto ==
 
@@ -87,6 +92,8 @@ http://summit.openstack.org/cfp/details/125
 :M: Simo Sorce <simo@redhat.com>
 :S: Maintained
 :F: crypto/
+
+bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-crypto
 
 KDS's REST API is being slightly changed after review by the Keystone developers.
 This will require some minor changes to the SecureMessage internal code used to fetch and tickets from the KDS.
@@ -99,6 +106,8 @@ It is mostly used in KDS to encrypt keys before storage and in this capacity it 
 It's fairly low level at the moment but a simpler interface to this can be added when there is reuse of the module. --jamielennox
 
 == oslo.db ==
+
+bp: https://blueprints.launchpad.net/oslo/+spec/oslo-db-lib
 
 === db ===
 
@@ -136,8 +145,9 @@ db api must be cleaned up to remove the eventlet dependency before graduating
 
 needs to be synced with nova's version
 
-
 == oslo.image ==
+
+bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-image
 
 === imageutils ===
 
@@ -147,8 +157,9 @@ needs to be synced with nova's version
 
 This module has just been added. Next steps are to add common image manipulation helper functions used in Nova and Cinder.
 
-
 == oslo.io ==
+
+bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-io
 
 === fileutils ===
 
@@ -160,8 +171,9 @@ This module has just been added. Next steps are to add common image manipulation
 
 There are still changes being made to function signatures to meet the needs of mocking when writing test scripts. Needs a cycle or two.
 
-
 == oslo.language ==
+
+bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-language
 
 === importutils ===
 
@@ -207,8 +219,9 @@ contribute to stdlib?
 
 :Depends on: (none)
 
-
 == oslo.local ==
+
+bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-local
 
 === local ===
 
@@ -219,6 +232,8 @@ contribute to stdlib?
 :Depends on: (none)
 
 == oslo.log ==
+
+bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-log
 
 === log ===
 
@@ -244,6 +259,8 @@ is moving to oslo.messaging and we do not want a circular dependency.
 
 :Depends on: oslo.config, notifier
 
+bp: https://blueprints.launchpad.net/oslo/+spec/graduate-notifier-log-handler
+
 === notifier ===
 
 :M: Julien Danjou <julien@danjou.info>
@@ -252,6 +269,8 @@ is moving to oslo.messaging and we do not want a circular dependency.
 :F: middleware/notifier.py
 
 :Depends on: context, gettextutils, importutils, jsonutils, log, timeutils, rpc
+
+bp: https://blueprints.launchpad.net/oslo/+spec/graduate-notifier-middleware
 
 Will be in oslo.messaging and removed from incubator in icehouse (markmc)
 http://docs.openstack.org/developer/oslo.messaging/notifier.html
@@ -265,20 +284,26 @@ http://docs.openstack.org/developer/oslo.messaging/notifier.html
 
 :Depends on: gettextutils, excutils, importutils, jsonutils, local, log, network_utils, rpc, service, sslutils, versionutils
 
+bp: https://blueprints.launchpad.net/oslo/+spec/remove-rpc-from-incubator
+
 Will be moving projects from this to oslo.messaging in Icehouse so that this can be removed (markmc)
 
 === zmq ===
 
-:M: Eric Windisch <eric@cloudscaling.com>
+:M: Mike Wilson <geekinutah@gmail.com>
+:M: Paul Mathews <pmathews@bluehost.com>
 :S: Maintained
 :F: rpc/impl_zmq.py
 :F: rpc/matchmaker*.py
 :F: rpc/zmq_receiver.py
 
+bp: https://blueprints.launchpad.net/oslo/+spec/graduate-zmq-driver
+
 Moving to oslo.messaging (markmc)
 
-
 == oslo.middleware ==
+
+bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-middleware
 
 === audit ===
 
@@ -301,6 +326,8 @@ currently making improvements to pycadf library... we have plans to extend its f
 
 == oslo.policy ==
 
+bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-policy
+
 === policy ===
 
 :M: Flavio Percoco <flavio@redhat.com>
@@ -315,6 +342,8 @@ We could get rid of the oslo.config dependency.
 
 == oslo.quota ==
 
+bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-quota
+
 === quota ===
 
 :M: Sergey Skripnick <sskripnick@mirantis.com>
@@ -324,6 +353,8 @@ We could get rid of the oslo.config dependency.
  This file is merged from nova and cinder, but not used in any project yet.
 
 == oslo.reports ==
+
+bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-reports
 
 === reports ===
 
@@ -341,6 +372,8 @@ Link: https://wiki.openstack.org/wiki/OutreachProgramForWomen/Ideas#Reporting_Fr
 
 == oslo.rootwrap ==
 
+bp: https://blueprints.launchpad.net/oslo/+spec/standalone-rootwrap
+
 === rootwrap ===
 
 :M: Thierry Carrez <thierry@openstack.org>
@@ -351,10 +384,9 @@ Move to separate bin/lib was blocked on the question of supporting running pytho
 
 will become oslo.rootwrap (see Thierry's other session notes)
 
-moving to oslo.rootwrap as part of https://blueprints.launchpad.net/oslo/+spec/standalone-rootwrap
-
-
 == oslo.serialization ==
+
+bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-serialization
 
 === jsonutils ===
 
@@ -374,8 +406,9 @@ moving to oslo.rootwrap as part of https://blueprints.launchpad.net/oslo/+spec/s
 
 This was a security fix. Can we rely on our dependencies having this fix now? - dhellmann
 
-
 == oslo.server ==
+
+bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-server
 
 === eventlet_backdoor ===
 
@@ -429,8 +462,9 @@ This one seems stable too.
 
 :Depends on: log, loopingcall
 
-
 == oslo.test ==
+
+bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-test
 
 === fixture ===
 
@@ -448,8 +482,9 @@ This one seems stable too.
 
 :Depends on: (none)
 
-
 == oslo.text ==
+
+bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-text
 
 === gettextutils ===
 
@@ -479,7 +514,6 @@ It may make sense to keep the encoding/decoding functions.
 to_slug() is used in the clients, maybe that can move to the new client section of the incubator?
 I would like to replace the units parsing code with another library if we can find one suitable. Pint does not have python 2.6 support, but would work other than that. - dhellmann
 
-
 == oslo.units ==
 
 === units ===
@@ -492,6 +526,8 @@ I would like to replace the units parsing code with another library if we can fi
 
 
 == oslo.utils ==
+
+bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-utils
 
 === network_utils ===
 
@@ -539,12 +575,6 @@ neutron also uses the same function
 :M:
 :S: Orphan
 :F: versionutils.py
-
-
-
-
-
-
 
 == To Be Deleted ==
 
