@@ -162,6 +162,16 @@ db api must be cleaned up to remove the eventlet dependency before graduating
 
 needs to be synced with nova's version
 
+== oslo.hooks ==
+
+=== hooks ===
+
+:M: Andrey Kurilin <akurilin@mirantis.com>
+:S: Maintained
+:F: hooks.py
+
+:Depends on: gettextutils, log
+
 == oslo.i18n ==
 
 bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-i18n
@@ -481,6 +491,15 @@ should eventually go into the service library (move in the incubator to the serv
 
 This one seems stable too.
 
+=== requestutils ===
+
+M: Sandy Walsh <sandy.walsh@rackspace.com>
+S: Maintained
+F: request_utils.py
+
+:Depends on: gettextutils
+
+
 === service ===
 
 :M: Michael Still <mikal@stillhq.com>
@@ -615,26 +634,6 @@ neutron also uses the same function
 
 TODO: Break circular dependency between versionutils and log by moving
 deprecation logging function out of log and into versionutils.
-
-== oslo.hooks ==
-
-=== hooks ===
-
-:M: Andrey Kurilin <akurilin@mirantis.com>
-:S: Maintained
-:F: hooks.py
-
-:Depends on: gettextutils, log
-
-== request_utils ==
-
-=== requestutils ===
-
-M: Sandy Walsh <sandy.walsh@rackspace.com>
-S: Maintained
-F: request_utils.py
-
-:Depends on: gettextutils
 
 == To Be Deleted ==
 
