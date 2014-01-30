@@ -5,11 +5,22 @@
 
 bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-cache
 
+=== cache ===
+
+M: Flavio Percoco <flavio@redhat.com>
+M: Morgan Fainberg <m@metacloud.com>
+S: Maintained
+F: cache/
+
+:Depends on: py3kcompat, lockutils, timeutils
+
 === memorycache ===
 
 :M:
 :S: Orphan
 :F: memorycache.py
+
+:Depends on: timeutils
 
 == oslo.client ==
 
@@ -21,6 +32,8 @@ bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-client
 :S: Maintained
 :F: apiclient/
 
+:Depends on: py3kcompat, strutils, importutils
+
 == oslo.concurrency ==
 
 bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-concurrency
@@ -31,13 +44,15 @@ bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-concurrency
 :S: Maintained
 :F: lockutils.py
 
-:Depends on: oslo.config
+:Depends on: oslo.config, fileutils, gettextutils, log
 
 This seems pretty stable now. I see no reason it couldn't be released as a library.
 
 Comments from bnemec via ML:
 
   It would be nice to get lockutils graduated to solve some of the issues mentioned in the oslo.db section, but I believe we do have an outstanding question regarding its behavior without lock_path being set.  I think Clint was on board with Sean's proposed solution after quite a bit of discussion (http://lists.openstack.org/pipermail/openstack-dev/2013-December/021620.html), so it's possible we could just restore that patch and call it done, but it should probably be addressed somehow before graduation.
+
+TODO: Remove the dependency of fixture on lockutils by moving fixture/lockutils.py into oslo.concurrency
 
 === processutils ===
 
@@ -74,7 +89,7 @@ keep for filter
 :S: Maintained
 :F: config/
 
-:Depends on: oslo.config
+:Depends on: oslo.config, gettextutils, importutils
 
 bp: https://blueprints.launchpad.net/oslo/+spec/graduate-config-generator
 
@@ -92,6 +107,8 @@ We will be talking about this issue at the summit
 :M: Simo Sorce <simo@redhat.com>
 :S: Maintained
 :F: crypto/
+
+:Depends on: gettextutils, importutils
 
 bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-crypto
 
@@ -117,7 +134,7 @@ bp: https://blueprints.launchpad.net/oslo/+spec/oslo-db-lib
 :S: Maintained
 :F: db/
 
-:Depends on: importutils, timeutils, gettextutils, log, py3kcompat, test
+:Depends on: importutils, timeutils, gettextutils, log, py3kcompat
 
 On the API side we've been pretty stable so far.
 
@@ -145,6 +162,22 @@ db api must be cleaned up to remove the eventlet dependency before graduating
 
 needs to be synced with nova's version
 
+== oslo.i18n ==
+
+bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-i18n
+
+=== gettextutils ===
+
+:M: Mark McLoughlin <markmc@redhat.com>
+:S: Maintained
+:F: gettextutils.py
+
+:Depends on: (none)
+
+I think this is mostly being maintained by the various folks working on delayed-message-translation now (markmc)
+
+Set a goal to have this ready to move out of the incubator during J? - dhellmann
+
 == oslo.image ==
 
 bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-image
@@ -154,6 +187,8 @@ bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-image
 :M: Zhongyue Luo <zhongyue.nah@intel.com>
 :S: Maintained
 :F: imageutils.py
+
+:Depends on: gettextutils, strutils
 
 This module has just been added. Next steps are to add common image manipulation helper functions used in Nova and Cinder.
 
@@ -245,9 +280,13 @@ bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-log
 
 flaper87: Agreed!
 
-ACTION: Change handling of publish_errors configuration option so the
+TODO: Change handling of publish_errors configuration option so the
 log_handler module isn't imported with importutils, since that module
 is moving to oslo.messaging and we do not want a circular dependency.
+
+TODO: Install the formatter to do translation, but don't require
+everyone to use the ContextAdapter, so we can remove dependencies on
+this lib from other libs.
 
 == oslo.messaging ==
 
@@ -335,7 +374,7 @@ bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-policy
 :S: Maintained
 :F: policy.py
 
-Depends on: fileutils, gettextutils, jsonutils, oslo.log,  oslo.config
+Depends on: fileutils, gettextutils, jsonutils, log,  oslo.config
 
 We could get rid of the oslo.config dependency.
  (Agreed on the stability of policy.py)
@@ -349,6 +388,8 @@ bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-quota
 :M: Sergey Skripnick <sskripnick@mirantis.com>
 :S: Maintained
 :F: quota.py
+
+:Depends on: gettextutils, importutils, log, timeutils
 
  This file is merged from nova and cinder, but not used in any project yet.
 
@@ -379,6 +420,8 @@ bp: https://blueprints.launchpad.net/oslo/+spec/standalone-rootwrap
 :M: Thierry Carrez <thierry@openstack.org>
 :S: Maintained
 :F: rootwrap/
+
+:Depends on: (none)
 
 Move to separate bin/lib was blocked on the question of supporting running python snippets as root (in addition to shelling out) which would break the ability to use plain "sudo" rather than rootwrap. That said with the performance issues of using rootwrap, the ability to run under direct "sudo" is seen as a feature rather than legacy. So we could go and push rootwrap as standalone during Icehouse. I'd like to have a last discussion (at the rootwrap session in HK) on perf issues and alternate solutions -- I don't want a move to standalone rootwrap to make any alternative solution more difficult.
 
@@ -472,7 +515,9 @@ bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-test
 :S: Maintained
 :F: fixture/
 
-:Depends on: lockutils
+:Depends on: (none)
+
+TODO: Remove the dependency on lockutils by moving fixture/lockutils.py into oslo.concurrency
 
 === test ===
 
@@ -485,18 +530,6 @@ bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-test
 == oslo.text ==
 
 bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-text
-
-=== gettextutils ===
-
-:M: Mark McLoughlin <markmc@redhat.com>
-:S: Maintained
-:F: gettextutils.py
-
-:Depends on: (none)
-
-I think this is mostly being maintained by the various folks working on delayed-message-translation now (markmc)
-
-Set a goal to have this ready to move out of the incubator during J? - dhellmann
 
 === strutils ===
 
@@ -570,11 +603,38 @@ nova uses this all over the place to check if a string is a uuid; can we move th
 
 neutron also uses the same function
 
+== oslo.versionutils ==
+
 === versionutils ===
 
 :M:
 :S: Orphan
 :F: versionutils.py
+
+:Depends on: gettextutils, log
+
+TODO: Break circular dependency between versionutils and log by moving
+deprecation logging function out of log and into versionutils.
+
+== oslo.hooks ==
+
+=== hooks ===
+
+:M: Andrey Kurilin <akurilin@mirantis.com>
+:S: Maintained
+:F: hooks.py
+
+:Depends on: gettextutils, log
+
+== request_utils ==
+
+=== requestutils ===
+
+M: Sandy Walsh <sandy.walsh@rackspace.com>
+S: Maintained
+F: request_utils.py
+
+:Depends on: gettextutils
 
 == To Be Deleted ==
 
@@ -606,6 +666,8 @@ Conclusion: only keystone needs this, so we can remove it from oslo-incubator
 :M:
 :S: Orphan
 :F: cliutils.py
+
+:Ignoring Depends on: apiclient, gettextutils, importutils, strutils, uuidutils
 
 These functions should move into the python-openstackclient project, if they are still needed. - dhellmann
 
