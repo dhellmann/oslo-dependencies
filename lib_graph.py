@@ -51,6 +51,10 @@ def print_graph(libraries, dependencies):
 
     print 'digraph oslo {'
 
+    # Show all of the libraries, even if there are no dependencies
+    for name, modules in sorted(libraries.items()):
+        generate_node(name)
+
     # Represent the module dependencies as library dependencies
     # with the module name as the edge label
     edges = set()
