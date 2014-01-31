@@ -238,6 +238,8 @@ Deprecate the functions replaced by stevedore & pkg_resources? the try_import() 
 
 :Depends on: (none)
 
+I'm going to move all that code into [https://pypi.python.org/pypi/six six] -- Julien Danjou
+
 === excutils ===
 
 M:
