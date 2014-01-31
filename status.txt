@@ -538,6 +538,8 @@ bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-test
 
 TODO: Remove the dependency on lockutils by moving fixture/lockutils.py into oslo.concurrency
 
+TODO: Remove the dependency on oslo.config by moving fixture/config.py into oslo.config
+
 === test ===
 
 :M: 
