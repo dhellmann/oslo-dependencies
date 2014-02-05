@@ -100,6 +100,12 @@ We will be talking about this issue at the summit
 # http://summit.openstack.org/cfp/details/258
 # http://summit.openstack.org/cfp/details/125
 
+=== oslo.config ===
+
+(Released library)
+
+:Depends on: (none)
+
 == oslo.crypto ==
 
 === crypto ===
@@ -301,6 +307,14 @@ everyone to use the ContextAdapter, so we can remove dependencies on
 this lib from other libs.
 
 == oslo.messaging ==
+
+=== oslo.messaging ===
+
+:M: Mark McLoughlin <markmc@redhat.com>
+:S: Maintained
+:F: (released library)
+
+:Depends on: excutils, gettextutils, importutils, jsonutils, network_utils, sslutils, timeutils, urlutils
 
 === log_handler ===
 
@@ -638,6 +652,10 @@ neutron also uses the same function
 
 TODO: Break circular dependency between versionutils and log by moving
 deprecation logging function out of log and into versionutils.
+
+== oslo.vmware ==
+
+TODO : Need to fill this in
 
 == To Be Deleted ==
 
