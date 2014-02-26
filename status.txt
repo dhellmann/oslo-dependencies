@@ -145,10 +145,11 @@ bp: https://blueprints.launchpad.net/oslo/+spec/oslo-db-lib
 On the API side we've been pretty stable so far.
 
 The big code changes worth mentioning are:
-    - using of [database] group for DB options instead of [DEFAULT] (must be handled gracefully by oslo.config deprecated_name|group options)
-    - new convention for naming of unique constraints (it's needed for providing developers with informative exceptions on integrity errors)
-    - support of slave engines (the ability to distribute SELECT queries among slave DBs -- this only extends the existing API a bit)
-    - moving of useful sqlalchemy and migrations utils developed in Nova to common code
+
+* using of [database] group for DB options instead of [DEFAULT] (must be handled gracefully by oslo.config deprecated_name|group options)
+* new convention for naming of unique constraints (it's needed for providing developers with informative exceptions on integrity errors)
+* support of slave engines (the ability to distribute SELECT queries among slave DBs -- this only extends the existing API a bit)
+* moving of useful sqlalchemy and migrations utils developed in Nova to common code
 
 It would be nice to complete these tasks before making common db code a separate library, but they aren't blockers in any way:
     https://blueprints.launchpad.net/oslo/+spec/tests-given-db-backend
@@ -445,13 +446,11 @@ bp: https://blueprints.launchpad.net/oslo/+spec/standalone-rootwrap
 
 :M: Thierry Carrez <thierry@openstack.org>
 :S: Maintained
-:F: rootwrap/
+:F: (released)
 
 :Depends on: (none)
 
-Move to separate bin/lib was blocked on the question of supporting running python snippets as root (in addition to shelling out) which would break the ability to use plain "sudo" rather than rootwrap. That said with the performance issues of using rootwrap, the ability to run under direct "sudo" is seen as a feature rather than legacy. So we could go and push rootwrap as standalone during Icehouse. I'd like to have a last discussion (at the rootwrap session in HK) on perf issues and alternate solutions -- I don't want a move to standalone rootwrap to make any alternative solution more difficult.
-
-will become oslo.rootwrap (see Thierry's other session notes)
+Graduated as oslo.rootwrap standalone library during the Icehouse cycle.
 
 == oslo.serialization ==
 
