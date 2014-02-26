@@ -656,6 +656,22 @@ deprecation logging function out of log and into versionutils.
 
 TODO : Need to fill this in
 
+== PyCADF ==
+
+=== pycadf ===
+
+https://launchpad.net/pycadf
+
+:M: Gordon Chung <chungg@ca.ibm.com>
+:S: Maintained
+:F: openstack/pycadf repository
+
+:Depends on: oslo.messaging, oslo.config
+
+The auditing middleware in pycadf depends on oslo.messaging.
+
+See also middleware/audit.py in oslo-incubator.
+
 == To Be Deleted ==
 
 === authutils ===
