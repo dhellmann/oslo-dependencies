@@ -1,5 +1,17 @@
 = Oslo Library Graduation Status =
 
+== cliff ==
+
+=== cliff ===
+
+
+https://launchpad.net/python-cliff
+
+:M: Doug Hellmann <doug.hellmann@dreamhost.com>
+:S: Maintained
+:F: openstack/cliff repository
+
+:Depends on: (none)
 
 == oslo.cache ==
 
@@ -654,7 +666,13 @@ deprecation logging function out of log and into versionutils.
 
 == oslo.vmware ==
 
-TODO : Need to fill this in
+=== oslo.vmware ===
+
+:M: Davanum Srinivas <davanum@gmail.com>
+:S: Maintained
+:F: openstack/oslo.vmware repo
+
+:Depends on:  gettextutils, importutils, jsonutils, local, log, loopingcall, timeutils
 
 == PyCADF ==
 
@@ -671,6 +689,30 @@ https://launchpad.net/pycadf
 The auditing middleware in pycadf depends on oslo.messaging.
 
 See also middleware/audit.py in oslo-incubator.
+
+== stevedore ==
+
+=== stevedore ===
+
+https://launchpad.net/python-stevedore
+
+:M: Doug Hellmann <doug.hellmann@dreamhost.com>
+:S: Maintained
+:F: openstack/stevedore repository
+
+:Depends on: (none)
+
+== taskflow ==
+
+=== taskflow ===
+
+https://launchpad.net/taskflow
+
+:M: Joshua Harlow <harlowja@yahoo-inc.com>
+:S: Maintained
+:F: openstack/taskflow repository
+
+:Depends on: gettextutils, pbr, stevedore, excutils, importutils, jsonutils, timeutils, uuidutils, py3kcompat
 
 == To Be Deleted ==
 
