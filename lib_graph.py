@@ -7,19 +7,26 @@ import fileinput
 
 def get_deps_by_module(infile):
     library_name = None
+    module_name = None
     dependencies = {}
     libraries = {}
     for n, line in enumerate(fileinput.input(infile)):
         if line.startswith('== '):
             # New lib
             library_name = line.strip().strip('=').strip()
-            libraries[library_name] = []
+            libraries[library_name] = {
+                'status': 'dev',
+                'modules': [],
+            }
             module_name = None
         elif line.startswith('=== '):
             # New module
             module_name = line.strip().strip('=').strip()
-            libraries[library_name].append(module_name)
+            libraries[library_name]['modules'].append(module_name)
             dependencies[module_name] = []
+        elif not module_name and line.startswith(':S:'):
+            # library status
+            libraries[library_name]['status'] = line.rsplit(':', 1)[-1].strip() or 'dev'
         elif line.startswith(':Depends on:'):
             # Dependencies
             if not module_name:
@@ -30,30 +37,38 @@ def get_deps_by_module(infile):
                 dependencies[module_name] = deps
     return libraries, dependencies
 
-    
+
+_node_colors = {
+    'dev': 'lightgrey',
+    'Released': 'steelblue',
+    'Graduating': 'orange',
+    'Deleting': 'crimson',
+}
+
 _node_namer = iter('N%d' % i for i in itertools.count())
 _node_names = collections.defaultdict(_node_namer.next)
 _known_nodes = set()
-def generate_node(label, shape='oval'):
+def generate_node(label, shape='oval', color='white'):
     if label not in _known_nodes:
-        print '  %s [ label = "%s", shape=%s ];' % (_node_names[label], label, shape)
+        print '  %s [ label = "%s", shape=%s, color=%s, style=filled ];' % \
+            (_node_names[label], label, shape, color)
         _known_nodes.add(label)
 
-    
+
 def print_graph(libraries, dependencies):
 
     # Invert the library contents so we can link
     # to the library instead of its contents
     mods_to_lib = {}
-    for name, modules in sorted(libraries.items()):
-        for mod in modules:
+    for name, attrs in sorted(libraries.items()):
+        for mod in attrs['modules']:
             mods_to_lib[mod] = name
 
     print 'digraph oslo {'
 
     # Show all of the libraries, even if there are no dependencies
-    for name, modules in sorted(libraries.items()):
-        generate_node(name)
+    for name, attrs in sorted(libraries.items()):
+        generate_node(name, color=_node_colors.get(attrs['status'], 'white'))
 
     # Represent the module dependencies as library dependencies
     # with the module name as the edge label

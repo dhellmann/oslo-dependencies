@@ -2,6 +2,8 @@
 
 == cliff ==
 
+:S: Released
+
 === cliff ===
 
 
@@ -64,7 +66,11 @@ Comments from bnemec via ML:
 
   It would be nice to get lockutils graduated to solve some of the issues mentioned in the oslo.db section, but I believe we do have an outstanding question regarding its behavior without lock_path being set.  I think Clint was on board with Sean's proposed solution after quite a bit of discussion (http://lists.openstack.org/pipermail/openstack-dev/2013-December/021620.html), so it's possible we could just restore that patch and call it done, but it should probably be addressed somehow before graduation.
 
+The issue with lock path is resolved by moving most locks to POSIX IPC instead of file locks, except when the lock is across servers. tooz should provide a better solution for that. - dhellmann
+
 TODO: Remove the dependency of fixture on lockutils by moving fixture/lockutils.py into oslo.concurrency
+
+TODO: Evaluate the relationship between this module and tooz, before graduation.
 
 === processutils ===
 
@@ -79,6 +85,8 @@ change status from maintained?
 needs some code cleanup (greenthreads and random sleeps)
 
 == oslo.config ==
+
+:S: Released
 
 === cfgfilter ===
 
@@ -141,6 +149,8 @@ It is mostly used in KDS to encrypt keys before storage and in this capacity it 
 It's fairly low level at the moment but a simpler interface to this can be added when there is reuse of the module. --jamielennox
 
 == oslo.db ==
+
+:S: Graduating
 
 bp: https://blueprints.launchpad.net/oslo/+spec/oslo-db-lib
 
@@ -321,13 +331,15 @@ this lib from other libs.
 
 == oslo.messaging ==
 
+:S: Released
+
 === oslo.messaging ===
 
 :M: Mark McLoughlin <markmc@redhat.com>
 :S: Maintained
 :F: (released library)
 
-:Depends on: excutils, gettextutils, importutils, jsonutils, network_utils, sslutils, timeutils, urlutils
+:Depends on: excutils, gettextutils, importutils, jsonutils, network_utils, sslutils, timeutils, py3kcompat
 
 === log_handler ===
 
@@ -452,6 +464,8 @@ Link: https://wiki.openstack.org/wiki/OutreachProgramForWomen/Ideas#Reporting_Fr
 
 == oslo.rootwrap ==
 
+:S: Released
+
 bp: https://blueprints.launchpad.net/oslo/+spec/standalone-rootwrap
 
 === rootwrap ===
@@ -489,6 +503,12 @@ This was a security fix. Can we rely on our dependencies having this fix now? - 
 == oslo.server ==
 
 bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-server
+
+=== context ===
+
+:M:
+:S: Orphan
+:F: context.py
 
 === eventlet_backdoor ===
 
@@ -552,6 +572,8 @@ F: request_utils.py
 :Depends on: log, loopingcall
 
 == oslo.test ==
+
+:S: Graduating
 
 bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-test
 
@@ -666,6 +688,8 @@ deprecation logging function out of log and into versionutils.
 
 == oslo.vmware ==
 
+:S: Released
+
 === oslo.vmware ===
 
 :M: Davanum Srinivas <davanum@gmail.com>
@@ -674,7 +698,18 @@ deprecation logging function out of log and into versionutils.
 
 :Depends on:  gettextutils, importutils, jsonutils, local, log, loopingcall, timeutils
 
+== pbr ==
+
+:S: Released
+
+=== pbr ===
+
+:M: Monty Taylor <mordred@inaugust.com>
+:S: Maintained
+
 == PyCADF ==
+
+:S: Released
 
 === pycadf ===
 
@@ -692,6 +727,8 @@ See also middleware/audit.py in oslo-incubator.
 
 == stevedore ==
 
+:S: Released
+
 === stevedore ===
 
 https://launchpad.net/python-stevedore
@@ -704,6 +741,8 @@ https://launchpad.net/python-stevedore
 
 == taskflow ==
 
+:S: Released
+
 === taskflow ===
 
 https://launchpad.net/taskflow
@@ -714,7 +753,9 @@ https://launchpad.net/taskflow
 
 :Depends on: gettextutils, pbr, stevedore, excutils, importutils, jsonutils, timeutils, uuidutils, py3kcompat
 
-== To Be Deleted ==
+== authutils ==
+
+:S: Deleting
 
 === authutils ===
 
@@ -739,6 +780,10 @@ Swift uses it too (https://review.openstack.org/4643) but swift hates Oslo, so .
 
 Conclusion: only keystone needs this, so we can remove it from oslo-incubator
 
+== cliutils ==
+
+:S: Deleting
+
 === cliutils ===
 
 :M:
@@ -749,7 +794,11 @@ Conclusion: only keystone needs this, so we can remove it from oslo-incubator
 
 These functions should move into the python-openstackclient project, if they are still needed. - dhellmann
 
-=== context ===
+== middleware/context ==
+
+:S: Deleting
+
+=== middleware/context ===
 
 :M:
 :S: Obsolete
@@ -761,6 +810,10 @@ Deprecate? Delete?
 delete, but look at the notifier code and logging -- also reviews in nova that were trying to rebase on top of this?
 
 used in context middleware (markmc says delete) and rpc (obsoleted by oslo.messaging)
+
+== scheduler ==
+
+:S: Deleting
 
 === scheduler ===
 
