@@ -21,10 +21,10 @@ bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-cache
 
 === cache ===
 
-M: Flavio Percoco <flavio@redhat.com>
-M: Morgan Fainberg <m@metacloud.com>
-S: Maintained
-F: cache/
+:M: Flavio Percoco <flavio@redhat.com>
+:M: Morgan Fainberg <m@metacloud.com>
+:S: Maintained
+:F: cache/
 
 :Depends on: py3kcompat, lockutils, timeutils
 
@@ -49,6 +49,8 @@ bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-client
 :Depends on: py3kcompat, strutils, importutils
 
 == oslo.concurrency ==
+
+:S: Juno
 
 bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-concurrency
 
@@ -150,7 +152,7 @@ It's fairly low level at the moment but a simpler interface to this can be added
 
 == oslo.db ==
 
-:S: Graduating
+:S: Juno
 
 bp: https://blueprints.launchpad.net/oslo/+spec/oslo-db-lib
 
@@ -193,15 +195,19 @@ needs to be synced with nova's version
 
 == oslo.hooks ==
 
+bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-hooks
+
 === hooks ===
 
 :M: Andrey Kurilin <akurilin@mirantis.com>
 :S: Maintained
 :F: hooks.py
 
-:Depends on: gettextutils, log
+:Depends on: gettextutils, log, stevedore
 
 == oslo.i18n ==
+
+:S: Juno
 
 bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-i18n
 
@@ -246,6 +252,8 @@ bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-io
 There are still changes being made to function signatures to meet the needs of mocking when writing test scripts. Needs a cycle or two.
 
 == oslo.language ==
+
+:S: Juno
 
 bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-language
 
@@ -297,6 +305,8 @@ contribute to stdlib?
 
 == oslo.local ==
 
+:S: Juno
+
 bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-local
 
 === local ===
@@ -308,6 +318,8 @@ bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-local
 :Depends on: (none)
 
 == oslo.log ==
+
+:S: Juno
 
 bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-log
 
@@ -329,6 +341,8 @@ TODO: Install the formatter to do translation, but don't require
 everyone to use the ContextAdapter, so we can remove dependencies on
 this lib from other libs.
 
+The log_handler module has already moved to oslo.messaging, but I don't see the configuration option. We need to change log.py to import the module from the new library, or come up with a more generic way to let things hook into the logging setup phase. --[[User:Doug-hellmann|doug-hellmann]] ([[User talk:Doug-hellmann|talk]]) 22:21, 6 March 2014 (UTC)
+
 == oslo.messaging ==
 
 :S: Released
@@ -348,8 +362,6 @@ this lib from other libs.
 :F: log.py
 
 :Depends on: oslo.config, notifier
-
-bp: https://blueprints.launchpad.net/oslo/+spec/graduate-notifier-log-handler
 
 === notifier ===
 
@@ -406,6 +418,8 @@ bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-middleware
 this middleware is relatively lightweight as it utilises notifier middleware to handle most of the actions... outside of that it uses only pycadf library to append audit info.
 currently making improvements to pycadf library... we have plans to extend its functionality but the overall model is relatively stable. (ref: https://launchpad.net/pycadf)
 
+The audit middleware in pycadf has its own copy of the notifier middleware. That will need to change to use the one in oslo.messaging. --[[User:Doug-hellmann|doug-hellmann]] ([[User talk:Doug-hellmann|talk]]) 22:31, 6 March 2014 (UTC)
+
 === middleware ===
 
 :M:
@@ -425,7 +439,7 @@ bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-policy
 :S: Maintained
 :F: policy.py
 
-Depends on: fileutils, gettextutils, jsonutils, log,  oslo.config
+:Depends on: fileutils, gettextutils, jsonutils, log,  oslo.config
 
 We could get rid of the oslo.config dependency.
  (Agreed on the stability of policy.py)
@@ -442,7 +456,9 @@ bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-quota
 
 :Depends on: gettextutils, importutils, log, timeutils
 
- This file is merged from nova and cinder, but not used in any project yet.
+This file is merged from nova and cinder, but not used in any project yet.
+
+Wait to see how merging it back into nova and cinder works? --[[User:Doug-hellmann|doug-hellmann]] ([[User talk:Doug-hellmann|talk]]) 23:09, 6 March 2014 (UTC)
 
 == oslo.reports ==
 
@@ -479,6 +495,8 @@ bp: https://blueprints.launchpad.net/oslo/+spec/standalone-rootwrap
 Graduated as oslo.rootwrap standalone library during the Icehouse cycle.
 
 == oslo.serialization ==
+
+:S: Juno
 
 bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-serialization
 
@@ -599,6 +617,8 @@ TODO: Remove the dependency on oslo.config by moving fixture/config.py into oslo
 
 == oslo.text ==
 
+:S: Juno
+
 bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-text
 
 === strutils ===
@@ -629,6 +649,8 @@ I would like to replace the units parsing code with another library if we can fi
 
 
 == oslo.utils ==
+
+:S: Juno
 
 bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-utils
 
@@ -673,7 +695,25 @@ nova uses this all over the place to check if a string is a uuid; can we move th
 
 neutron also uses the same function
 
+== oslo.version ==
+
+:S: Released
+
+=== oslo.version ===
+
+:M:
+:S: Orphan
+:F:
+
+:Depends on: (none)
+
+Utilities for consuming the version from pkg_resources.
+
 == oslo.versionutils ==
+
+:S: Juno
+
+Should this move to oslo.version instead? No, that would add extra dependencies to oslo.version that would make it harder to use in installation scripts. - dhellmann
 
 === versionutils ===
 
@@ -751,7 +791,7 @@ https://launchpad.net/taskflow
 :S: Maintained
 :F: openstack/taskflow repository
 
-:Depends on: gettextutils, pbr, stevedore, excutils, importutils, jsonutils, timeutils, uuidutils, py3kcompat
+:Depends on: gettextutils, stevedore, excutils, importutils, jsonutils, timeutils, uuidutils, py3kcompat
 
 == authutils ==
 

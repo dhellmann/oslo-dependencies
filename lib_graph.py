@@ -39,19 +39,20 @@ def get_deps_by_module(infile):
 
 
 _node_colors = {
-    'dev': 'lightgrey',
-    'Released': 'steelblue',
-    'Graduating': 'orange',
-    'Deleting': 'crimson',
+    'dev': ('lightgrey', 'black'),
+    'Released': ('steelblue', 'white'),
+    'Graduating': ('orange', 'black'),
+    'Deleting': ('crimson', 'white'),
+    'Juno': ('yellow', 'black'),
 }
 
 _node_namer = iter('N%d' % i for i in itertools.count())
 _node_names = collections.defaultdict(_node_namer.next)
 _known_nodes = set()
-def generate_node(label, shape='oval', color='white'):
+def generate_node(label, shape='oval', bgcolor='white', fgcolor='black'):
     if label not in _known_nodes:
-        print '  %s [ label = "%s", shape=%s, color=%s, style=filled ];' % \
-            (_node_names[label], label, shape, color)
+        print '  %s [ label = "%s", shape=%s, color=%s, fontcolor=%s style=filled ];' % \
+            (_node_names[label], label, shape, bgcolor, fgcolor)
         _known_nodes.add(label)
 
 
@@ -68,7 +69,8 @@ def print_graph(libraries, dependencies):
 
     # Show all of the libraries, even if there are no dependencies
     for name, attrs in sorted(libraries.items()):
-        generate_node(name, color=_node_colors.get(attrs['status'], 'white'))
+        bg, fg = _node_colors.get(attrs['status'], ('white', 'black'))
+        generate_node(name, bgcolor=bg, fgcolor=fg)
 
     # Represent the module dependencies as library dependencies
     # with the module name as the edge label
