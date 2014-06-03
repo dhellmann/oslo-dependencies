@@ -26,7 +26,7 @@ bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-cache
 :S: Maintained
 :F: cache/
 
-:Depends on: py3kcompat, lockutils, timeutils
+:Depends on: lockutils, timeutils
 
 === memorycache ===
 
@@ -46,7 +46,7 @@ bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-client
 :S: Maintained
 :F: apiclient/
 
-:Depends on: py3kcompat, strutils, importutils
+:Depends on: strutils, importutils
 
 == oslo.concurrency ==
 
@@ -164,7 +164,7 @@ bp: https://blueprints.launchpad.net/oslo/+spec/oslo-db-lib
 :S: Maintained
 :F: db/
 
-:Depends on: importutils, timeutils, gettextutils, log, py3kcompat
+:Depends on: importutils, timeutils, gettextutils, log
 
 On the API side we've been pretty stable so far.
 
@@ -251,58 +251,6 @@ bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-io
 
 There are still changes being made to function signatures to meet the needs of mocking when writing test scripts. Needs a cycle or two.
 
-== oslo.language ==
-
-:S: Juno
-
-bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-language
-
-=== importutils ===
-
-:M:
-:S: Orphan
-:F: importutils.py
-
-:Depends on: (none)
-
-Deprecate the functions replaced by stevedore & pkg_resources? the try_import() function looks trivial, do we need it? - dhellmann
-
-=== py3kcompat ===
-
-:M: Chuck Short <chuck.short@canonical.com>
-:S: Maintained
-:F: py3kcompat
-
-:Depends on: (none)
-
-I'm going to move all that code into [https://pypi.python.org/pypi/six six] -- Julien Danjou
-
-=== excutils ===
-
-M:
-S: Orphan
-F: excutils.py
-
-:Depends on: gettextutils
-
-Other than its use of our gettextutils, this could be pulled out into a separate library without needing the oslo name. - dhellmann
-
-can we use the stdlib? should we remove the translations? (2 messages)
-
-look for similar code elsewhere
-
-contribute to stdlib?
-
-# How do we handle translations for the log messages if this goes into its own lib?
-
-=== funcutils ===
-
-:M: Joshua Harlow <harlowja@yahoo-inc.com>
-:S: Maintained
-:F: funcutils.py
-
-:Depends on: (none)
-
 == oslo.local ==
 
 :S: Juno
@@ -353,7 +301,7 @@ The log_handler module has already moved to oslo.messaging, but I don't see the 
 :S: Maintained
 :F: (released library)
 
-:Depends on: excutils, gettextutils, importutils, jsonutils, network_utils, sslutils, timeutils, py3kcompat
+:Depends on: excutils, gettextutils, importutils, jsonutils, network_utils, sslutils, timeutils
 
 === log_handler ===
 
@@ -528,6 +476,8 @@ bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-server
 :S: Orphan
 :F: context.py
 
+There is some confusion about whether this should be obsoleted or not, based on notes from the icehouse summit (https://etherpad.openstack.org/p/icehouse-oslo-status). Given some trouble we had late in icehouse with projects not having consistent parameters in their contexts, it seems like what we want is to provide a context base class which the projects can subclass and then customize to add data and fill in the common values in an app-specific way (https://blueprints.launchpad.net/oslo/+spec/app-agnostic-logging-parameters). --[[User:Doug-hellmann|doug-hellmann]] ([[User talk:Doug-hellmann|talk]]) 17:54, 11 March 2014 (UTC)
+
 === eventlet_backdoor ===
 
 :M:
@@ -654,13 +604,31 @@ I would like to replace the units parsing code with another library if we can fi
 
 bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-utils
 
+=== excutils ===
+
+M:
+S: Orphan
+F: excutils.py
+
+:Depends on: gettextutils
+
+Other than its use of our gettextutils, this could be pulled out into a separate library without needing the oslo name. - dhellmann
+
+can we use the stdlib? should we remove the translations? (2 messages)
+
+look for similar code elsewhere
+
+contribute to stdlib?
+
+# How do we handle translations for the log messages if this goes into its own lib?
+
 === network_utils ===
 
 :M:
 :S: Orphan
 :F: network_utils.py
 
-:Depends on: py3kcompat
+:Depends on: (none)
 
 I'm trying to put these things in stdlib see http://bugs.python.org/issue18191 -- jd
 
@@ -791,7 +759,7 @@ https://launchpad.net/taskflow
 :S: Maintained
 :F: openstack/taskflow repository
 
-:Depends on: gettextutils, stevedore, excutils, importutils, jsonutils, timeutils, uuidutils, py3kcompat
+:Depends on: gettextutils, stevedore, excutils, importutils, jsonutils, timeutils, uuidutils
 
 == authutils ==
 
@@ -863,3 +831,34 @@ used in context middleware (markmc says delete) and rpc (obsoleted by oslo.messa
 
 boris-42: We should get rid of this. There is a way to build scalable one scheduler as a service.
 And solve a lot of current issues.
+
+== INCUBATOR:funcutils ==
+
+=== funcutils ===
+
+:M: Joshua Harlow <harlowja@yahoo-inc.com>
+:S: Maintained
+:F: funcutils.py
+
+:Depends on: (none)
+
+3 June 2014 - Staying in the incubator until 2.6 support is no longer
+needed. -- dhellmann
+
+https://etherpad.openstack.org/p/juno-oslo-release-plan
+
+== INCUBATOR:importutils ==
+
+=== importutils ===
+
+:M:
+:S: Orphan
+:F: importutils.py
+
+:Depends on: (none)
+
+Deprecate the functions replaced by stevedore & pkg_resources? the
+try_import() function looks trivial, do we need it? - dhellmann
+
+3 June 2014 -- Staying in the incubator until everyone has moved to
+stevedore. -- dhellmann
