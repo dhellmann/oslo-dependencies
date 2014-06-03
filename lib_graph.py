@@ -19,6 +19,8 @@ def get_deps_by_module(infile):
                 'modules': [],
             }
             module_name = None
+            if library_name.startswith('INCUBATOR:'):
+                libraries[library_name]['status'] = 'Incubating'
         elif line.startswith('=== '):
             # New module
             module_name = line.strip().strip('=').strip()
@@ -44,6 +46,7 @@ _node_colors = {
     'Graduating': ('orange', 'black'),
     'Deleting': ('crimson', 'white'),
     'Juno': ('yellow', 'black'),
+    'Incubating': ('lightgrey', 'red'),
 }
 
 _node_namer = iter('N%d' % i for i in itertools.count())
