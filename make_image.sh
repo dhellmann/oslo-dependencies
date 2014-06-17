@@ -18,3 +18,6 @@ draw libs
 
 lib_graph_verbose.py > libs_verbose.dot
 draw libs_verbose
+
+lib_graph_uncluttered.py > libs_uncluttered.dot
+draw libs_uncluttered

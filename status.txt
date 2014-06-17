@@ -539,12 +539,6 @@ F: request_utils.py
 
 :Depends on: log, loopingcall
 
-== oslo.test ==
-
-:S: Graduating
-
-bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-test
-
 === fixture ===
 
 :M: Monty Taylor <mordred@inaugust.com>
@@ -570,22 +564,6 @@ TODO: Remove the dependency on oslo.config by moving fixture/config.py into oslo
 :S: Juno
 
 bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-text
-
-=== strutils ===
-
-:M: Flavio Percoco <flavio@redhat.com>
-:S: Maintained
-:F: strutils.py
-
-:Depends on: gettextutils
-
-I think strutils is stable enough, however, I'd like to:
-    1) Find a common place for this and other modules. I don't think it is worth having oslo.strutils. We once talk about having oslo.text and group strutils and other modules there.
-    2) Make sure it's PY3K support. Even though python 3 support is not an OS requirement, this module should be fairly simple to port and we could have a voting PY3K gate for it. 
-
-It may make sense to keep the encoding/decoding functions.
-to_slug() is used in the clients, maybe that can move to the new client section of the incubator?
-I would like to replace the units parsing code with another library if we can find one suitable. Pint does not have python 2.6 support, but would work other than that. - dhellmann
 
 == oslo.units ==
 
@@ -633,6 +611,22 @@ contribute to stdlib?
 I'm trying to put these things in stdlib see http://bugs.python.org/issue18191 -- jd
 
 won't graduate?
+
+=== strutils ===
+
+:M: Flavio Percoco <flavio@redhat.com>
+:S: Maintained
+:F: strutils.py
+
+:Depends on: gettextutils
+
+I think strutils is stable enough, however, I'd like to:
+    1) Find a common place for this and other modules. I don't think it is worth having oslo.strutils. We once talk about having oslo.text and group strutils and other modules there.
+    2) Make sure it's PY3K support. Even though python 3 support is not an OS requirement, this module should be fairly simple to port and we could have a voting PY3K gate for it. 
+
+It may make sense to keep the encoding/decoding functions.
+to_slug() is used in the clients, maybe that can move to the new client section of the incubator?
+I would like to replace the units parsing code with another library if we can find one suitable. Pint does not have python 2.6 support, but would work other than that. - dhellmann
 
 === timeutils ===
 
