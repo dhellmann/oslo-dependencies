@@ -673,8 +673,6 @@ Utilities for consuming the version from pkg_resources.
 
 == oslo.versionutils ==
 
-:S: Juno
-
 Should this move to oslo.version instead? No, that would add extra dependencies to oslo.version that would make it harder to use in installation scripts. - dhellmann
 
 === versionutils ===
