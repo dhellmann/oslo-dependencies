@@ -54,13 +54,21 @@ bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-client
 
 bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-concurrency
 
+=== local ===
+
+:M:
+:S: Orphan
+:F: local.py
+
+:Depends on: (none)
+
 === lockutils ===
 
 :M: Michael Still <mikal@stillhq.com>
 :S: Maintained
 :F: lockutils.py
 
-:Depends on: oslo.config, fileutils, gettextutils, log
+:Depends on: oslo.config, fileutils, gettextutils
 
 This seems pretty stable now. I see no reason it couldn't be released as a library.
 
@@ -80,7 +88,7 @@ TODO: Evaluate the relationship between this module and tooz, before graduation.
 :S: Maintained
 :F: processutils.py
 
-:Depends on: gettextutils, log
+:Depends on: gettextutils
 
 change status from maintained?
 
@@ -164,7 +172,7 @@ bp: https://blueprints.launchpad.net/oslo/+spec/oslo-db-lib
 :S: Maintained
 :F: db/
 
-:Depends on: importutils, timeutils, gettextutils, log
+:Depends on: importutils, timeutils, gettextutils
 
 On the API side we've been pretty stable so far.
 
@@ -203,7 +211,7 @@ bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-hooks
 :S: Maintained
 :F: hooks.py
 
-:Depends on: gettextutils, log, stevedore
+:Depends on: gettextutils, stevedore
 
 == oslo.i18n ==
 
@@ -247,29 +255,20 @@ bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-io
 :S: Maintained
 :F: fileutils.py
 
-:Depends on: excutils, gettextutils, log
+:Depends on: excutils, gettextutils
 
 There are still changes being made to function signatures to meet the needs of mocking when writing test scripts. Needs a cycle or two.
-
-== oslo.local ==
-
-:S: Juno
-
-bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-local
-
-=== local ===
-
-:M:
-:S: Orphan
-:F: local.py
-
-:Depends on: (none)
 
 == oslo.log ==
 
 :S: Juno
 
 bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-log
+
+NOTE: The dependencies 'on' this library have been removed from the
+other modules because we assume we will update them to use python's
+logging directly as described below and in the blueprints for
+graduating oslo.log.
 
 === log ===
 
@@ -318,7 +317,7 @@ The log_handler module has already moved to oslo.messaging, but I don't see the 
 :F: notifier/
 :F: middleware/notifier.py
 
-:Depends on: context, gettextutils, importutils, jsonutils, log, timeutils, rpc
+:Depends on: context, gettextutils, importutils, jsonutils, timeutils, rpc
 
 bp: https://blueprints.launchpad.net/oslo/+spec/graduate-notifier-middleware
 
@@ -332,7 +331,7 @@ http://docs.openstack.org/developer/oslo.messaging/notifier.html
 :S: Maintained
 :F: rpc/
 
-:Depends on: gettextutils, excutils, importutils, jsonutils, local, log, network_utils, rpc, service, sslutils, versionutils
+:Depends on: gettextutils, excutils, importutils, jsonutils, local, network_utils, rpc, service, sslutils, versionutils
 
 bp: https://blueprints.launchpad.net/oslo/+spec/remove-rpc-from-incubator
 
@@ -374,11 +373,13 @@ The audit middleware in pycadf has its own copy of the notifier middleware. That
 :S: Orphan
 :F: middleware/
 
-:Depends on: gettextutils, log, context, notifier
+:Depends on: gettextutils, context, notifier
 
 == oslo.policy ==
 
 bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-policy
+
+The keystone team is also interested in owning the policy management code. - dhellmann, 7 July 2014
 
 === policy ===
 
@@ -387,7 +388,7 @@ bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-policy
 :S: Maintained
 :F: policy.py
 
-:Depends on: fileutils, gettextutils, jsonutils, log,  oslo.config
+:Depends on: fileutils, gettextutils, jsonutils,  oslo.config
 
 We could get rid of the oslo.config dependency.
  (Agreed on the stability of policy.py)
@@ -402,7 +403,7 @@ bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-quota
 :S: Maintained
 :F: quota.py
 
-:Depends on: gettextutils, importutils, log, timeutils
+:Depends on: gettextutils, importutils, timeutils
 
 This file is merged from nova and cinder, but not used in any project yet.
 
@@ -484,7 +485,7 @@ There is some confusion about whether this should be obsoleted or not, based on 
 :S: Orphan
 :F: eventlet_backdoor.py
 
-:Depends on: gettextutils, log
+:Depends on: gettextutils
 
 should eventually go into the service library (move in the incubator to the service stuff)
 
@@ -494,7 +495,7 @@ should eventually go into the service library (move in the incubator to the serv
 :S: Orphan
 :F: loopingcall.py
 
-:Depends on: gettextutils, log, timeutils
+:Depends on: gettextutils, timeutils
 
 === periodic_task ===
 
@@ -502,7 +503,7 @@ should eventually go into the service library (move in the incubator to the serv
 :S: Maintained
 :F: periodic_task.py
 
-:Depends on: gettextutils, log, timeutils
+:Depends on: gettextutils, timeutils
 
 This one seems stable too.
 
@@ -521,7 +522,7 @@ F: request_utils.py
 :S: Maintained
 :F: service.py
 
-:Depends on: eventlet_backdoor, gettextutils, importutils, log, threadgroup
+:Depends on: eventlet_backdoor, gettextutils, importutils, threadgroup
 
 === sslutils ===
 
@@ -537,7 +538,7 @@ F: request_utils.py
 :S: Orphan
 :F: threadgroup.py
 
-:Depends on: log, loopingcall
+:Depends on: loopingcall
 
 === fixture ===
 
@@ -681,7 +682,7 @@ Should this move to oslo.version instead? No, that would add extra dependencies 
 :S: Orphan
 :F: versionutils.py
 
-:Depends on: gettextutils, log
+:Depends on: gettextutils
 
 TODO: Break circular dependency between versionutils and log by moving
 deprecation logging function out of log and into versionutils.
@@ -696,7 +697,7 @@ deprecation logging function out of log and into versionutils.
 :S: Maintained
 :F: openstack/oslo.vmware repo
 
-:Depends on:  gettextutils, importutils, jsonutils, local, log, loopingcall, timeutils
+:Depends on:  gettextutils, importutils, jsonutils, loopingcall, timeutils
 
 == pbr ==
 
