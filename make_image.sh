@@ -2,12 +2,18 @@
 
 set -ex
 
+format=$1
+if [ -z "$format" ]
+then
+    format="png"
+fi
+
 function draw {
     typeset base=$1
-    dot -Tpng -o${base}.png ${base}.dot
-#    neato -Tpng -o${base}_neato.png ${base}.dot
-#    twopi -Tpng -o${base}_twopi.png ${base}.dot
-#    circo -Tpng -o${base}_circo.png ${base}.dot
+    dot -T${format} -o${base}.${format} ${base}.dot
+#    neato -T${format} -o${base}_neato.${format} ${base}.dot
+#    twopi -T${format} -o${base}_twopi.${format} ${base}.dot
+    circo -T${format} -o${base}_circo.${format} ${base}.dot
 }
 
 depend_graph.py > modules.dot
