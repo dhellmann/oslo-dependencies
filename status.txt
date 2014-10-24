@@ -54,14 +54,6 @@ bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-client
 
 bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-concurrency
 
-=== local ===
-
-:M:
-:S: Orphan
-:F: local.py
-
-:Depends on: (none)
-
 === lockutils ===
 
 :M: Michael Still <mikal@stillhq.com>
@@ -270,6 +262,16 @@ other modules because we assume we will update them to use python's
 logging directly as described below and in the blueprints for
 graduating oslo.log.
 
+=== local ===
+
+:M:
+:S: Orphan
+:F: local.py
+
+:Depends on: (none)
+
+This module is only used to manage thread-locals for the logging context objects, and we may want to make it a private implementation detail of the logging package. However, something similar is used in oslo.messaging.localcontext, and if the intent there is to make sure the context is available for logging then something needs to make the 2 modules work together. See https://review.openstack.org/#/c/110070/ --[[User:Doug-hellmann|doug-hellmann]] ([[User talk:Doug-hellmann|talk]]) 16:28, 5 August 2014 (UTC)
+
 === log ===
 
 :M:
@@ -353,19 +355,6 @@ Moving to oslo.messaging (markmc)
 == oslo.middleware ==
 
 bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-middleware
-
-=== audit ===
-
-:M: Gordon Chung <chungg@ca.ibm.com>
-:S: Maintained
-:F: middleware/audit.py
-
-:Depends on: (none)
-
-this middleware is relatively lightweight as it utilises notifier middleware to handle most of the actions... outside of that it uses only pycadf library to append audit info.
-currently making improvements to pycadf library... we have plans to extend its functionality but the overall model is relatively stable. (ref: https://launchpad.net/pycadf)
-
-The audit middleware in pycadf has its own copy of the notifier middleware. That will need to change to use the one in oslo.messaging. --[[User:Doug-hellmann|doug-hellmann]] ([[User talk:Doug-hellmann|talk]]) 22:31, 6 March 2014 (UTC)
 
 === middleware ===
 
@@ -855,3 +844,20 @@ try_import() function looks trivial, do we need it? - dhellmann
 
 3 June 2014 -- Staying in the incubator until everyone has moved to
 stevedore. -- dhellmann
+
+== keystonemiddleware ==
+
+The keystonemiddleware library will be owned by the Keystone team, and is only listed here to reflect the new location of the audit middleware library.
+
+=== audit ===
+
+:M: Gordon Chung <chungg@ca.ibm.com>
+:S: Maintained
+:F: middleware/audit.py
+
+:Depends on: (none)
+
+this middleware is relatively lightweight as it utilises notifier middleware to handle most of the actions... outside of that it uses only pycadf library to append audit info.
+currently making improvements to pycadf library... we have plans to extend its functionality but the overall model is relatively stable. (ref: https://launchpad.net/pycadf)
+
+The audit middleware in pycadf has its own copy of the notifier middleware. That will need to change to use the one in oslo.messaging. --[[User:Doug-hellmann|doug-hellmann]] ([[User talk:Doug-hellmann|talk]]) 22:31, 6 March 2014 (UTC)
