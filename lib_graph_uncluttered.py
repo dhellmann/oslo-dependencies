@@ -46,7 +46,7 @@ _node_colors = {
     'Released': ('steelblue', 'white'),
     'Graduating': ('orange', 'black'),
     'Deleting': ('crimson', 'white'),
-    'Juno': ('yellow', 'black'),
+    'Next': ('yellow', 'black'),
     'Incubating': ('lightgrey', 'red'),
 }
 

@@ -50,7 +50,7 @@ bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-client
 
 == oslo.concurrency ==
 
-:S: Juno
+:S: Next
 
 bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-concurrency
 
@@ -128,6 +128,18 @@ We will be talking about this issue at the summit
 
 :Depends on: (none)
 
+== oslo.context ==
+
+:S: Next
+
+=== context ===
+
+:M:
+:S: Orphan
+:F: context.py
+
+There is some confusion about whether this should be obsoleted or not, based on notes from the icehouse summit (https://etherpad.openstack.org/p/icehouse-oslo-status). Given some trouble we had late in icehouse with projects not having consistent parameters in their contexts, it seems like what we want is to provide a context base class which the projects can subclass and then customize to add data and fill in the common values in an app-specific way (https://blueprints.launchpad.net/oslo/+spec/app-agnostic-logging-parameters). --[[User:Doug-hellmann|doug-hellmann]] ([[User talk:Doug-hellmann|talk]]) 17:54, 11 March 2014 (UTC)
+
 == oslo.crypto ==
 
 === crypto ===
@@ -152,7 +164,7 @@ It's fairly low level at the moment but a simpler interface to this can be added
 
 == oslo.db ==
 
-:S: Juno
+:S: Released
 
 bp: https://blueprints.launchpad.net/oslo/+spec/oslo-db-lib
 
@@ -207,7 +219,7 @@ bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-hooks
 
 == oslo.i18n ==
 
-:S: Juno
+:S: Released
 
 bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-i18n
 
@@ -253,7 +265,7 @@ There are still changes being made to function signatures to meet the needs of m
 
 == oslo.log ==
 
-:S: Juno
+:S: Next
 
 bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-log
 
@@ -278,7 +290,7 @@ This module is only used to manage thread-locals for the logging context objects
 :S: Orphan
 :F: log.py
 
-:Depends on: oslo.config, gettextutils, importutils, jsonutils, local
+:Depends on: oslo.config, gettextutils, importutils, jsonutils, local, context
 
 flaper87: Agreed!
 
@@ -291,6 +303,8 @@ everyone to use the ContextAdapter, so we can remove dependencies on
 this lib from other libs.
 
 The log_handler module has already moved to oslo.messaging, but I don't see the configuration option. We need to change log.py to import the module from the new library, or come up with a more generic way to let things hook into the logging setup phase. --[[User:Doug-hellmann|doug-hellmann]] ([[User talk:Doug-hellmann|talk]]) 22:21, 6 March 2014 (UTC)
+
+24 Oct 2014 - dhellmann - The logging code will define an API for the context class to support for providing logging data for the context. We also need something to provide the context to the log, either by calling a callback when a context is created or by exposing an API to ask for the context explicitly.
 
 == oslo.messaging ==
 
@@ -434,7 +448,7 @@ Graduated as oslo.rootwrap standalone library during the Icehouse cycle.
 
 == oslo.serialization ==
 
-:S: Juno
+:S: Released
 
 bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-serialization
 
@@ -459,14 +473,6 @@ This was a security fix. Can we rely on our dependencies having this fix now? - 
 == oslo.server ==
 
 bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-server
-
-=== context ===
-
-:M:
-:S: Orphan
-:F: context.py
-
-There is some confusion about whether this should be obsoleted or not, based on notes from the icehouse summit (https://etherpad.openstack.org/p/icehouse-oslo-status). Given some trouble we had late in icehouse with projects not having consistent parameters in their contexts, it seems like what we want is to provide a context base class which the projects can subclass and then customize to add data and fill in the common values in an app-specific way (https://blueprints.launchpad.net/oslo/+spec/app-agnostic-logging-parameters). --[[User:Doug-hellmann|doug-hellmann]] ([[User talk:Doug-hellmann|talk]]) 17:54, 11 March 2014 (UTC)
 
 === eventlet_backdoor ===
 
@@ -551,7 +557,7 @@ TODO: Remove the dependency on oslo.config by moving fixture/config.py into oslo
 
 == oslo.text ==
 
-:S: Juno
+:S: Next
 
 bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-text
 
@@ -568,7 +574,7 @@ bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-text
 
 == oslo.utils ==
 
-:S: Juno
+:S: Released
 
 bp: https://blueprints.launchpad.net/oslo/+spec/graduate-oslo-utils
 
